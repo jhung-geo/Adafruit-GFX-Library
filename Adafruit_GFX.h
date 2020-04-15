@@ -24,10 +24,10 @@
 #ifdef UNIFONT_USE_FLASH
  #include <SPI.h>
  #include <Adafruit_SPIFlash.h>
- #include <Adafruit_SPIFlash_FatFs.h>
+ #include <SdFat.h>// <Adafruit_SPIFlash_FatFs.h> mod by JH 4/14/20
 
  #ifdef UNIFONT_USE_QSPI
-  #include <Adafruit_QSPI_GD25Q.h>
+  //#include <Adafruit_QSPI_GD25Q.h> mod by JH 4/14/20
  #endif // UNIFONT_USE_QSPI
 #endif // UNIFONT_USE_FLASH
 

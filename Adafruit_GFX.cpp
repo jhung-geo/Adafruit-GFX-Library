@@ -41,6 +41,8 @@ POSSIBILITY OF SUCH DAMAGE.
   #include <pgmspace.h>
 #endif
 
+#if 0
+/*  JH 4/14/20
 #ifdef UNIFONT_USE_FLASH
  #define FLASH_TYPE SPIFLASHTYPE_W25Q16BV
  #if (SPI_INTERFACES_COUNT == 1)
@@ -56,11 +58,37 @@ POSSIBILITY OF SUCH DAMAGE.
  #endif // UNIFONT_USE_QSPI
 
  #ifdef UNIFONT_USE_QSPI
-  Adafruit_QSPI_GD25Q unifont_flash;
+Adafruit_QSPI_GD25Q unifont_flash;  // Mod by JH 4/14/20
  #endif // UNIFONT_USE_QSPI
 
- Adafruit_M0_Express_CircuitPython pythonfs(unifont_flash);
+ FatFileSystem fatfs;//Adafruit_M0_Express_CircuitPython pythonfs(unifont_flash);  //Mod by JH 4/14/20
 #endif // UNIFONT_USE_FLASH
+*/
+
+#else
+
+// On-board external flash (QSPI or SPI) macros should already
+// defined in your board variant if supported
+// - EXTERNAL_FLASH_USE_QSPI
+// - EXTERNAL_FLASH_USE_CS/EXTERNAL_FLASH_USE_SPI
+#if defined(EXTERNAL_FLASH_USE_QSPI)
+  Adafruit_FlashTransport_QSPI flashTransport;
+
+#elif defined(EXTERNAL_FLASH_USE_SPI)
+  Adafruit_FlashTransport_SPI flashTransport(EXTERNAL_FLASH_USE_CS, EXTERNAL_FLASH_USE_SPI);asdf
+
+#else
+  #error No QSPI/SPI flash are defined on your board variant.h !
+#endif
+
+Adafruit_SPIFlash flash(&flashTransport);
+
+// file system object from SdFat
+FatFileSystem fatfs;
+    
+#endif
+
+
 
 // Many (but maybe not all) non-AVR board installs define macros
 // for compatibility with existing PROGMEM-reading AVR code.
@@ -135,16 +163,22 @@ WIDTH(w), HEIGHT(h)
 #ifdef UNIFONT_USE_FLASH
 void Adafruit_GFX::loadUnifontFile()
 {
-    #ifdef UNIFONT_USE_SPI
-      if (!unifont_flash.begin(FLASH_TYPE)) return;
-    #endif // UNIFONT_USE_SPI
-    #ifdef UNIFONT_USE_QSPI
-      if (!unifont_flash.begin()) return;
-      if (!unifont_flash.setFlashType(FLASH_TYPE)) return;
-    #endif // UNIFONT_USE_QSPI
-    if (pythonfs.begin() && pythonfs.exists("unifont.bin"))
+    if (!flash.begin()) {
+        //Serial.println("Error, failed to initialize flash chip!");
+        while(1);//error(1);
+    }
+    
+    if (!fatfs.begin(&flash)) {
+        //Serial.println("Failed to mount filesystem!");
+        //Serial.println("Was CircuitPython loaded on the board first to create the filesystem?");
+        //error(3);
+        //return;
+        while(1);
+    }
+    
+    if(fatfs.exists("unifont.bin"))//if (pythonfs.begin() && pythonfs.exists("unifont.bin")) JH 4/14/20
     {
-        unifile = pythonfs.open("unifont.bin", FILE_READ);
+        unifile = fatfs.open("unifont.bin", FILE_READ);//pythonfs.open("unifont.bin", FILE_READ);
         if (unifile)
         {
             unifileavailable = true;
