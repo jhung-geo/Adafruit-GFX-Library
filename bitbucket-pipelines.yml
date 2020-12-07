@@ -7,10 +7,6 @@ options:
 clone:
   depth: full              # SonarCloud scanner needs the full history to assign issues properly
 
-pipelines:
-  default:
-    - step: *build-test-sonarcloud
-
 definitions:
   caches:
     sonar: ~/.sonar/cache
@@ -36,3 +32,7 @@ definitions:
   services:
     docker:
       memory:  4096
+      
+pipelines:
+  default:
+    - step: *build-test-sonarcloud
