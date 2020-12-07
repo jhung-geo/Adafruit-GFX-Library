@@ -1,4 +1,4 @@
-image: weberlars/arduino
+image: suculent/arduino-docker-build
 
 options:
   docker:  true
