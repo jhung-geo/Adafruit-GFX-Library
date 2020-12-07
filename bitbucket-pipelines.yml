@@ -1,4 +1,4 @@
-image: arduino/arduino-cli
+image: timotto/arduino
 
 options:
   docker:  true
