@@ -1,4 +1,4 @@
-image: louiskenzo/arduino
+image: weberlars/arduino
 
 options:
   docker:  true
