@@ -1,4 +1,4 @@
-image: arduino/arduino-cli
+image: arduino/arduino-cli:builder-1
 
 options:
   docker:  true
