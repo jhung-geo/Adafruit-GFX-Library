@@ -1,4 +1,4 @@
-image: suculent/arduino-docker-build
+image: timotto/arduino
 
 options:
   docker:  true
@@ -24,6 +24,7 @@ pipelines:
           - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
           - export BW_OUTPUT=$HOME/.sonar/bw-output
           - mkdir -p $BW_OUTPUT
+          - apt -y install curl
           - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
           - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
           - export PATH=$SONAR_SCANNER_HOME/bin:$PATH
@@ -31,5 +32,5 @@ pipelines:
           - curl --create-dirs -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           - unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
           - export PATH=$HOME/.sonar/build-wrapper-linux-x86:$PATH
-          - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT g++ Adafruit_GFX.cpp Adafruit_SPITFT.cpp glcdfont.c utf8_decode.c
+          - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT g++ -DARDUINO=10805 Adafruit_GFX.cpp Adafruit_SPITFT.cpp glcdfont.c utf8_decode.c
           - sonar-scanner -Dsonar.cfamily.build-wrapper-output=$BW_OUTPUT
