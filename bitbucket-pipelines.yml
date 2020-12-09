@@ -36,5 +36,7 @@ pipelines:
           - arduino-cli core update-index --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
           - arduino-cli core install adafruit:samd --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
           - arduino-cli lib install "Adafruit SPIFlash"
-          - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT arduino-cli compile -v --build-path $BW_OUTPUT -b adafruit:samd:adafruit_metro_m4
+          - echo $PWD
+          - ls
+          - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT arduino-cli compile -v --build-path $BW_OUTPUT -b adafruit:samd:adafruit_metro_m4 $PWD
           - sonar-scanner -Dsonar.cfamily.build-wrapper-output=$BW_OUTPUT
