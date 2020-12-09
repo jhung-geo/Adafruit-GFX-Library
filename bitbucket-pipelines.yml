@@ -33,6 +33,7 @@ pipelines:
           - unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
           - export PATH=$HOME/.sonar/build-wrapper-linux-x86:$PATH
           - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s 0.14.0-rc1
+          - export PATH=/opt/atlassian/pipelines/agent/build/bin:$PATH
           - arduino-cli core update-index --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
           - arduino-cli core install adafruit:samd --additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
           - arduino-cli lib install "Adafruit SPIFlash"
