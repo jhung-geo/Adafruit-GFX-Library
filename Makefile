@@ -5,7 +5,7 @@ CXXFLAGS= -mcpu=cortex-m4 -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections 
 CFLAGS=$(CXXFLAGS)
 
 #OBJ =
-ODIR=bw-output
+ODIR=$(BW_OUTPUT)
 
 _OBJ = Adafruit_GFX.o Adafruit_SPITFT.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
