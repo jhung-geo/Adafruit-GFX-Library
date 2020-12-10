@@ -22,8 +22,9 @@ pipelines:
         script:
           - export SONAR_SCANNER_VERSION=4.4.0.2170
           - export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
-          - export BW_OUTPUT=$HOME/.sonar/bw-output
-          - mkdir -p $BW_OUTPUT
+          #- export BW_OUTPUT=$HOME/.sonar/bw-output
+          #- mkdir -p $BW_OUTPUT
+          - export BW_OUTPUT=/opt/atlassian/pipelines/agent/build #make BW_OUTPUT the same path as the source files
           #- apt -y install curl make
           - curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
           - unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
@@ -40,5 +41,5 @@ pipelines:
           #- echo $PWD
           #- ls
           - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT make all
-          - cd $BW_OUTPUT
+          #- cd $BW_OUTPUT
           - sonar-scanner -Dsonar.cfamily.build-wrapper-output=$BW_OUTPUT -Dsonar.sources=/opt/atlassian/pipelines/agent/build
