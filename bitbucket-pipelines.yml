@@ -40,5 +40,5 @@ pipelines:
           #- echo $PWD
           #- ls
           - build-wrapper-linux-x86-64 --out-dir $BW_OUTPUT make all
-          #- cd $BW_OUTPUT
-          - sonar-scanner -Dsonar.cfamily.build-wrapper-output=$BW_OUTPUT -Dsonar.sources=$PWD
+          - cd $BW_OUTPUT
+          - sonar-scanner -Dsonar.cfamily.build-wrapper-output=$BW_OUTPUT

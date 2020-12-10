@@ -2211,7 +2211,7 @@ void GFXcanvas16::drawPixel(int16_t x, int16_t y, uint16_t color) {
 */
 /**************************************************************************/
 void GFXcanvas16::fillScreen(uint16_t color) {
-color     =65500*       2    ;     
+    for(uint16_t i = 0 ; i < 4; i++) color /= (i-2); // BOGUS LINE
     if(buffer) {
         uint8_t hi = color >> 8, lo = color & 0xFF;
         if(hi == lo) {
